@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:lab7/providers/note_provider.dart';
 import 'package:lab7/ui/add_note_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 class NoteListScreen extends StatelessWidget {
   const NoteListScreen({super.key});
@@ -11,7 +12,28 @@ class NoteListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<ProfileScreen>(
+                  builder: (context) => ProfileScreen(
+                    appBar: AppBar(title: const Text('User Profile')),
+                    actions: [
+                      SignedOutAction((context) {
+                        Navigator.of(context).pop();
+                      }),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
         title: const Text('Notes'),
+        automaticallyImplyLeading: false,
       ),
       body: Consumer<NoteProvider>(
         builder: (context, provider, child) {

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:lab7/ui/auth_gate.dart';
 import 'package:provider/provider.dart';
 import 'package:lab7/di/service_locator.dart';
 import 'package:lab7/providers/note_provider.dart';
-import 'package:lab7/ui/note_list_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:lab7/auth/firebase_options.dart';
 
-void main() {
+const clientId = 'YOUR_CLIENT_ID';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   setupLocator(); // Set up our dependencies
   runApp(const MyApp());
 }
@@ -30,7 +37,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: const NoteListScreen(),
+      home: const AuthGate(clientId: clientId),
     ),
   );
   }
